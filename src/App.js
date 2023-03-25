@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Calendar from "./components/Calendar";
+import eventsData from "./data/events.json";
+
+import "./App.css";
 
 function App() {
+  const [events] = useState(eventsData);
+
+  const [startingHour, setStartingHour] = useState(9);
+  const [endingHour, setEndingHour] = useState(21);
+
+  useEffect(() => {
+    function handleResize() {
+      setStartingHour(9);
+      setEndingHour(21);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Calendar
+        events={events}
+        startingHour={startingHour}
+        endingHour={endingHour}
+      />
+    </>
   );
 }
 
